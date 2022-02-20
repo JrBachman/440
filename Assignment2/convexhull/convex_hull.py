@@ -78,9 +78,15 @@ def clockwise_sort(points: List[Point]):
     return
 
 def split(points: List[Point]) -> List[Point]:
-
-
-
+    clockwise_sort(points)
+    x_mean = sum(p[0] for p in points) / len(points)
+    a_points = List[Point]
+    b_points = List[Point]
+    for i in range(len(points)):
+        if points[i][0] < x_mean:
+            a_points.add(Point)
+        else:
+            b_points.add(Point)
 
     return a_points, b_points
 
