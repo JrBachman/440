@@ -3,6 +3,8 @@ import sys
 from typing import List
 from typing import Tuple
 
+from pyrsistent import b
+
 EPSILON = sys.float_info.epsilon
 Point = Tuple[int, int]
 
@@ -75,11 +77,32 @@ def clockwise_sort(points: List[Point]):
     points.sort(key=angle)
     return
 
+def split(points: List[Point]) -> List[Point]:
+
+
+
+
+    return a_points, b_points
+
+
+def merge(points: List[Point]) -> List[Point]:
+
+
+
+
+    return
+
+
 
 def base_case_hull(points: List[Point]) -> List[Point]:
     """ Base case of the recursive algorithm.
     """
     # TODO: You need to implement this function.
+    
+
+
+
+
     return points
 
 
@@ -91,4 +114,16 @@ def compute_hull(points: List[Point]) -> List[Point]:
     # TODO: Implement a correct computation of the convex hull
     #  using the divide-and-conquer algorithm
     # TODO: Document your Initialization, Maintenance and Termination invariants.
-    return points
+    
+
+    if len(points) < 6:
+        return base_case_hull(points)
+
+    else:
+        a_points,b_points = split(points)
+        a = compute_hull(a_points)
+        b = compute_hull(b_points) 
+
+
+    return merge(a,b)
+

@@ -3,7 +3,7 @@ import readline
 import sys
 
 def get_data():
-    try:
+                 try:
         with open(sys.argv[1], 'r') as file:
             n=file.readline()
             num = int(n)
