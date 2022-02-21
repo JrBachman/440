@@ -48,3 +48,5 @@ if __name__ == '__main__':
     w.bind('<Button-1>', add_point)
 
     w.mainloop()
+
+
