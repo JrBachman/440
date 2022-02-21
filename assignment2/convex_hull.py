@@ -3,8 +3,11 @@ import sys
 from typing import List
 from typing import Tuple
 from pyrsistent import b
+
 EPSILON = sys.float_info.epsilon
 Point = Tuple[int, int]
+
+
 def y_intercept(p1: Point, p2: Point, x: int) -> float:
     """
     Given two points, p1 and p2, an x coordinate from a vertical line,
@@ -15,6 +18,8 @@ def y_intercept(p1: Point, p2: Point, x: int) -> float:
     x2, y2 = p2
     slope = (y2 - y1) / (x2 - x1)
     return y1 + (x - x1) * slope
+
+
 def triangle_area(a: Point, b: Point, c: Point) -> float:
     """
     Given three points a,b,c,
@@ -27,6 +32,8 @@ def triangle_area(a: Point, b: Point, c: Point) -> float:
     bx, by = b
     cx, cy = c
     return ((cx - bx) * (by - ay) - (bx - ax) * (cy - by)) / 2
+
+
 def is_clockwise(a: Point, b: Point, c: Point) -> bool:
     """
     Given three points a,b,c,
@@ -34,6 +41,8 @@ def is_clockwise(a: Point, b: Point, c: Point) -> bool:
     (subject to floating-point precision)
     """
     return triangle_area(a, b, c) < -EPSILON
+
+
 def is_counter_clockwise(a: Point, b: Point, c: Point) -> bool:
     """
     Given three points a,b,c,
@@ -41,6 +50,8 @@ def is_counter_clockwise(a: Point, b: Point, c: Point) -> bool:
     (subject to floating-point precision)
     """
     return triangle_area(a, b, c) > EPSILON
+
+
 def collinear(a: Point, b: Point, c: Point) -> bool:
     """
     Given three points a,b,c,
@@ -48,6 +59,8 @@ def collinear(a: Point, b: Point, c: Point) -> bool:
     (subject to floating-point precision)
     """
     return abs(triangle_area(a, b, c)) <= EPSILON
+
+
 def clockwise_sort(points: List[Point]):
     """
     Given a list of points, sorts those points in clockwise order about their centroid.
@@ -60,6 +73,7 @@ def clockwise_sort(points: List[Point]):
         return (math.atan2(point[1] - y_mean, point[0] - x_mean) + 2 * math.pi) % (2 * math.pi)
     points.sort(key=angle)
     return
+
 
 def split(points: List[Point]) -> List[Point]:
 
@@ -77,14 +91,21 @@ def split(points: List[Point]) -> List[Point]:
 
     return a_points, b_points
 
+
 def merge(points: List[Point]) -> List[Point]:
+
+
     return
+
+
 def base_case_hull(points: List[Point]) -> List[Point]:
     """ Base case of the recursive algorithm.
     """
     # TODO: You need to implement this function.
     
     return points
+
+
 def compute_hull(points: List[Point]) -> List[Point]:
     """
     Given a list of points, computes the convex hull around those points
@@ -96,8 +117,12 @@ def compute_hull(points: List[Point]) -> List[Point]:
     
     if len(points) < 6:
         return base_case_hull(points)
+        
     else:
         a_points,b_points = split(points)
         a = compute_hull(a_points)
         b = compute_hull(b_points) 
+
+
+
     return merge(a,b)
