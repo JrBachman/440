@@ -89,21 +89,45 @@ def split(points: List[Point]) -> List[Point]:
         else:
             b_points.add(Point)
 
-    return a_points, b_points
+    return a_points, b_points 
 
 
-def merge(points: List[Point]) -> List[Point]:
+def merge(lpoints: List[Point], rpoints: List[Point]) -> List[Point]:
+    p = left_point(rpoints)
+    q = right_point(lpoints)
 
+    return hull
 
-    return
+def left_point(points: List[Point]) -> int:
+    min = 0
+    for point in points:
+        if point[point][0] < points[min][0]:
+            min = point
+        elif point[point][0] == points[min][0]:
+            if point[point][1] > points[min][1]:
+                min = point
+    return min
 
-
+def right_point(points: List[Point]) -> int:
+    max = 0
+    for point in points:
+        if point[point][0] > points[max][0]:
+            max = point
+        elif point[point][0] == points[max][0]:
+            if point[point][1] < points[max][1]:
+                max = point
+    return max
+ 
 def base_case_hull(points: List[Point]) -> List[Point]:
     """ Base case of the recursive algorithm.
     """
     # TODO: You need to implement this function.
+    hull = []
+    left = left_point(points) 
+    hull.append(left)
+
     
-    return points
+    return hull 
 
 
 def compute_hull(points: List[Point]) -> List[Point]:
@@ -119,7 +143,7 @@ def compute_hull(points: List[Point]) -> List[Point]:
         return base_case_hull(points)
         
     else:
-        a_points,b_points = split(points)
+        a_points,b_points = split(points) 
         a = compute_hull(a_points)
         b = compute_hull(b_points) 
 
