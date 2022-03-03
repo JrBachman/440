@@ -12,7 +12,9 @@ def shortest_path(
                 return 0
         current = start
         next = rubik.perm_apply(rubik.F,current)
-        rubik.fuck = my_ass
+
+
+
 
         """
         Using 2-way BFS, finds the shortest path from start to end.
