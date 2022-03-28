@@ -53,7 +53,7 @@ def shortest_path(
                         for move in moves:
                                 next_position = rubik.perm_apply(move, position)
                                 #makes sure move does not undo the last move of the position
-                                if next_position in parentStart == 0:
+                                if next_position not in parentStart:
                                         parentStart[next_position] = (position, move)
                                         start_next_tier.add(next_position)
                                         #if a match is found call list maker and terminate
@@ -66,7 +66,7 @@ def shortest_path(
                 for position in end_current_tier:
                         for move in moves:
                                 next_position = rubik.perm_apply(move, position)
-                                if next_position in parentEnd == 0:
+                                if next_position not in parentEnd:
                                         parentEnd[next_position] = (position, move)
                                         end_next_tier.add(next_position)
                                         if next_position in parentStart:
@@ -94,5 +94,3 @@ def path(parentStart, parentEnd, position):
         
         return start_path + end_path 
 
-
-raise NotImplementedError
