@@ -5,65 +5,70 @@ import sys
 from array import array
 from typing import Dict
 from typing import Tuple
-
-class NodeTree(object):
-
-    def __init__(self, left=None, right=None):
-        self.left = left
-        self.right = right
-
-    def children(self):
-        return (self.left, self.right)
-
-    def nodes(self):
-        return (self.left, self.right)
-
-    def __str__(self):
-        return '%s_%s' % (self.left, self.right)
+from bitarray import bitarray
 
 
-def huffman_code_tree(node, left=True, binString=''):
-    if type(node) is str:
-        return {node: binString}
-    (l, r) = node.children()
-    d = dict()
-    d.update(huffman_code_tree(l, True, binString + '0'))
-    d.update(huffman_code_tree(r, False, binString + '1'))
-    return d
+class Node(object):
+    def __init__(self, data, freq,l,r):
+        self.left = l
+        self.right = r
+        self.freq = freq
+        self.data = data
+
+
+def make_code(node, code=''):
+    if node.data != None:
+        return {node.data: code}
+    c = dict()
+    c.update(make_code(node.left, code + '0'))
+    c.update(make_code(node.right, code + '1'))
+    return c
+    
+
+
 
 def encode(message: bytes) -> Tuple[str, Dict]:
     """ Given the bytes read from a file, encodes the contents using the Huffman encoding algorithm.
 
     :param message: raw sequence of bytes from a file
     :returns: string of 1s and 0s representing the encoded message
-              dict containing the decoder ring as explained in lecture and handout.
+            dict containing the decoder ring as explained in lecture and handout.
     """
 
 
     '''byte_str = message = f’{byte_str:08b}’'''
-    
-    freq = {}
+    freqs = {}
     for i in message:
-        if i in freq:
-            freq[i] += 1
+        if i in freqs:
+            freqs[i] += 1
         else:
-            freq[i] = 1
-    freq = sorted(freq.items(), key=lambda x: x[1], reverse=True)
-    nodes = freq
-    while len(nodes) > 1:
-        (key1, c1) = nodes[-1]
-        (key2, c2) = nodes[-2]
-        nodes = nodes[:-2]
-        node = NodeTree(key1, key2)
-        nodes.append((node, c1 + c2))
-    huffmanCode = huffman_code_tree(nodes[0][0])
+            freqs[i] = 1
 
-    print(' Char | Huffman code ')
-    print('----------------------')
-    for (char, frequency) in freq:
-        print(' %-4r |%12s' % (char, huffmanCode[char]))
-                       
+    freqs = sorted(freqs.items(), key=lambda x: x[1], reverse = False)
+    nodes = []
+    for key,val in freqs:
+        nodes.append(Node(key,val,None,None))
+    while len(nodes) > 1:
+        nodes.sort(key=lambda x: x.freq, reverse=False)
+        sum = nodes[0].freq + nodes[1].freq
+        nodes.append(Node(None,sum,nodes[0],nodes[1]))
+        nodes.pop(0)
+        nodes.pop(0)
+        
+    codec = make_code(nodes[0])
+    code = ''
     
+    #for key,val in freqs:
+    #    print(key,codec[key])
+    #print(codec)
+    for j in message:
+        code += codec[j]
+    
+    
+    return [code, codec]
+
+
+
     raise NotImplementedError
 
 
@@ -74,6 +79,12 @@ def decode(message: str, decoder_ring: Dict) -> bytes:
     :param decoder_ring: dict containing the decoder ring
     return: raw sequence of bytes that represent a decoded file
     """
+
+
+
+
+    dec = bitarray(message).decode(decoder_ring)
+    print(dec)
     raise NotImplementedError
 
 
@@ -82,7 +93,7 @@ def compress(message: bytes) -> Tuple[array, Dict]:
 
     :param message: raw sequence of bytes from a file
     :returns: array of bytes to be written to disk
-              dict containing the decoder ring
+                dict containing the decoder ring
     """
     raise NotImplementedError
 
