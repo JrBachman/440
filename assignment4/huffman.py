@@ -3,9 +3,9 @@ import os
 import pickle
 import sys
 from array import array
+from turtle import position
 from typing import Dict
 from typing import Tuple
-from bitarray import bitarray
 
 
 class Node(object):
@@ -60,7 +60,7 @@ def encode(message: bytes) -> Tuple[str, Dict]:
     
     #for key,val in freqs:
     #    print(key,codec[key])
-    #print(codec)
+    print(codec)
     for j in message:
         code += codec[j]
     
@@ -72,6 +72,12 @@ def encode(message: bytes) -> Tuple[str, Dict]:
     raise NotImplementedError
 
 
+def get_key(val,ring):
+    for key, value in ring.items():
+        if val == value:
+            return key
+
+
 def decode(message: str, decoder_ring: Dict) -> bytes:
     """ Given the encoded string and the decoder ring, decodes the message using the Huffman decoding algorithm.
 
@@ -79,12 +85,24 @@ def decode(message: str, decoder_ring: Dict) -> bytes:
     :param decoder_ring: dict containing the decoder ring
     return: raw sequence of bytes that represent a decoded file
     """
+    print(decoder_ring)
+    print(message)
+    
+    enigma = ''
+    byte_array = array('B')
+    while len(message) > 0:
+        enigma += message[0]
+        message = message[1:]
+        if enigma in decoder_ring.values():
+            val = get_key(enigma,decoder_ring)
+            byte_array.append(val)
+            enigma = ''
+    return byte_array    
+        
 
 
 
 
-    dec = bitarray(message).decode(decoder_ring)
-    print(dec)
     raise NotImplementedError
 
 
@@ -114,7 +132,7 @@ if __name__ == '__main__':
         raise Exception(usage)
 
     operation = sys.argv[1]
-    if operation not in {'-c', '-d', '-v', 'w'}:
+    if operation not in {'-c', '-d', '-v', '-w'}:
         raise Exception(usage)
 
     infile, outfile = sys.argv[2], sys.argv[3]
