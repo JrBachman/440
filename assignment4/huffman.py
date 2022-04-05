@@ -7,6 +7,28 @@ from turtle import position
 from typing import Dict
 from typing import Tuple
 
+#Jason Bachman
+# In building the Huffman tree I am using nodes to represent each point on the tree as each node holds its frequency, data if it has any, 
+# and pointers to its left and right children if it has any.
+# I am storing all the nodes in a list which I sort and remove children everytime I add to the tree. 
+# The final tree is represented by the relationship stored within the nodes.
+# I build the frequencies in a dictionary by iterating over the message and updating it each time a character is found.
+# The code is made by recursively traversing the tree until a leaf is found adding a 1 or 0 based on the direction it takes to the child. Once a leaf is found
+# the data is stored in a dictionary with the code that was built in getting to that leaf
+# Decoding is handled by taking one character at a time and checking the dictionary to see if it a valid path. If not it adds another char.
+# if it is a valid path it takes the val for that key and adds it to the decrypted message before ckearing the current enigma path and pulling more characters.
+# Invarients: child nodes are always smaller then their parents. 
+#           : Nodes are sorted left to right.
+#           : Leaf nodes have no children and store the ascii code
+#           : The of nodes shrinks until the whole tree relationship is defined
+#           : All nodes popped from the list have a parent
+#           : While decoding the coded message is dissassembled from the front and the message is done when the coded message is empty
+# 
+
+
+
+
+
 
 class Node(object):
     def __init__(self, data, freq,l,r):
@@ -113,6 +135,17 @@ def compress(message: bytes) -> Tuple[array, Dict]:
     :returns: array of bytes to be written to disk
                 dict containing the decoder ring
     """
+
+    coded,ring = encode(message)
+    double_coded = bytearray(coded,"ascii")
+    pad = 0
+    while sys.getsizeof(double_coded) % 8 != 0:
+        double_coded.append(0)
+        pad += 1
+    ring['padding'] = pad
+    return [double_coded, ring]
+
+
     raise NotImplementedError
 
 
@@ -123,6 +156,16 @@ def decompress(message: array, decoder_ring: Dict) -> bytes:
     :param decoder_ring: dict containing the decoder ring
     :return: raw sequence of bytes that represent a decompressed file
     """
+    
+
+    padding = decoder_ring.get("padding")
+    while padding >=1:
+        message.pop()
+        padding-=1
+
+    coded = str(message, 'utf-8')
+    decoded_message = decode(coded,decoder_ring)
+    return decoded_message
     raise NotImplementedError
 
 
