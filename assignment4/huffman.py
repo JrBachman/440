@@ -7,7 +7,7 @@ from turtle import position
 from typing import Dict
 from typing import Tuple
 
-#Jason Bachman
+#Jason Bachman 
 # In building the Huffman tree I am using nodes to represent each point on the tree as each node holds its frequency, data if it has any, 
 # and pointers to its left and right children if it has any.
 # I am storing all the nodes in a list which I sort and remove children everytime I add to the tree. 
