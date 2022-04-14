@@ -2,8 +2,9 @@ import os
 # import tkinter, tkinter.filedialog
 from tkinter import *
 from tkinter import ttk
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, test
 from resizeable_image import ResizeableImage
+from datetime import datetime
 
 seam = None
 image = None
@@ -70,6 +71,9 @@ def show_seam():
     image.color_seam(seam)
     update_display()
     status['text'] = 'Computed seam, as shown in red.'
+    
+
+    
 
 def remove_seam():
     global image, seam
