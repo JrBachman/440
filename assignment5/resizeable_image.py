@@ -1,12 +1,38 @@
+'''
+Naive_seam and r_seam created by Professor Noah Daniels.
+'''
+
+
+
 import imagematrix
 import timeit
 
     
 
+
+
 class ResizeableImage(imagematrix.ImageMatrix):
 
+
+    def naive_seam(self, energies):
+        seams = []
+        for c in range(self.width):
+            seams.extend(self.r_seam(c, 0, energies))
+        return min(seams)[1]
+
+    def r_seam(self, c, r, energies):
+        if r == self.height-1: # base case
+            return [(energies[c,r], [(c,r)])]
+        children = ([] if c == 0 else self.r_seam(c-1, r+1, energies)) + \
+                   (self.r_seam(c, r+1, energies)) + \
+                    ([] if c == self.width-1 else self.r_seam(c+1, r+1, energies))
+        return [(energies[c,r] + e, l + [(c,r)]) for (e,l) in children]
+
+
+
     def best_seam(self, dp=False):
-        #recursion hurts
+        energies = {}
+        return self.naive_seam(energies)
         raise NotImplementedError
 
         
